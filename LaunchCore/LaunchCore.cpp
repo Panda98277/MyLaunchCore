@@ -65,7 +65,7 @@ namespace MyLaunchCore {
     LaunchCommand += "-Xmx ${Xmx} -Xms ${Xms} -Xmn ${Xmn} -XX:+UseG1GC -XX:-UseAdaptiveSizePolicy -XX:-OmitStackTraceInFastThrow";
 
     if (settings.gamewindow.IsFullscreen) LaunchCommand += "--fullscreen ";
-    //Toolkits::replace_all();
+    
 
 #pragma endregion
 
