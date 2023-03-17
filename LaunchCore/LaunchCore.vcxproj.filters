@@ -36,6 +36,12 @@
     <ClInclude Include="Format.h">
       <Filter>头文件\Toolkits</Filter>
     </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GetTime.h">
+      <Filter>头文件\Toolkits</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

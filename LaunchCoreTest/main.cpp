@@ -19,112 +19,112 @@ using namespace std;
 using namespace MyLaunchCore;
 
 namespace Toolkits {
-	class ArgBase {
-	public:
-		ArgBase() {}
-		virtual ~ArgBase() {}
-		virtual void Format(std::ostringstream& ss, const std::string& fmt) = 0;
-	};
+  class ArgBase {
+  public:
+    ArgBase() {}
+    virtual ~ArgBase() {}
+    virtual void Format(std::ostringstream& ss, const std::string& fmt) = 0;
+  };
 
-	template <class T>
-	class Arg : public ArgBase {
-	public:
-		Arg(T arg) : m_arg(arg) {}
-		virtual ~Arg() {}
-		virtual void Format(std::ostringstream& ss, const std::string& fmt) {
-			ss << m_arg;
-		}
-	private:
-		T m_arg;
-	};
+  template <class T>
+  class Arg : public ArgBase {
+  public:
+    Arg(T arg) : m_arg(arg) {}
+    virtual ~Arg() {}
+    virtual void Format(std::ostringstream& ss, const std::string& fmt) {
+      ss << m_arg;
+    }
+  private:
+    T m_arg;
+  };
 
-	class ArgArray : public std::vector < ArgBase* > {
-	public:
-		ArgArray() {}
-		~ArgArray() {
-			std::for_each(begin(), end(), [](ArgBase* p) { delete p; });
-		}
-	};
+  class ArgArray : public std::vector < ArgBase* > {
+  public:
+    ArgArray() {}
+    ~ArgArray() {
+      std::for_each(begin(), end(), [](ArgBase* p) { delete p; });
+    }
+  };
 
-	static void FormatItem(std::ostringstream& ss, const std::string& item, const ArgArray& args) {
-		int index = 0;
-		int alignment = 0;
-		std::string fmt;
+  static void FormatItem(std::ostringstream& ss, const std::string& item, const ArgArray& args) {
+    int index = 0;
+    int alignment = 0;
+    std::string fmt;
 
-		char* endptr = nullptr;
-		index = strtol(&item[0], &endptr, 10);
-		if (index < 0 || index >= args.size()) {
-			return;
-		}
+    char* endptr = nullptr;
+    index = strtol(&item[0], &endptr, 10);
+    if (index < 0 || index >= args.size()) {
+      return;
+    }
 
-		if (*endptr == ',') {
-			alignment = strtol(endptr + 1, &endptr, 10);
-			if (alignment > 0) {
-				ss << std::right << std::setw(alignment);
-			}
-			else if (alignment < 0) {
-				ss << std::left << std::setw(-alignment);
-			}
-		}
+    if (*endptr == ',') {
+      alignment = strtol(endptr + 1, &endptr, 10);
+      if (alignment > 0) {
+        ss << std::right << std::setw(alignment);
+      }
+      else if (alignment < 0) {
+        ss << std::left << std::setw(-alignment);
+      }
+    }
 
-		if (*endptr == ':') {
-			fmt = endptr + 1;
-		}
+    if (*endptr == ':') {
+      fmt = endptr + 1;
+    }
 
-		args[index]->Format(ss, fmt);
+    args[index]->Format(ss, fmt);
 
-		return;
-	}
+    return;
+  }
 
-	template <class T>
-	static void Transfer(ArgArray& argArray, T t) {
-		argArray.push_back(new Arg<T>(t));
-	}
+  template <class T>
+  static void Transfer(ArgArray& argArray, T t) {
+    argArray.push_back(new Arg<T>(t));
+  }
 
-	template <class T, typename... Args>
-	static void Transfer(ArgArray& argArray, T t, Args&&... args) {
-		Transfer(argArray, t);
-		Transfer(argArray, args...);
-	}
+  template <class T, typename... Args>
+  static void Transfer(ArgArray& argArray, T t, Args&&... args) {
+    Transfer(argArray, t);
+    Transfer(argArray, args...);
+  }
 
-	template <typename... Args>
-	std::string Format(const std::string& format, Args&&... args) {
-		if (sizeof...(args) == 0) {
-			return format;
-		}
+  template <typename... Args>
+  std::string Format(const std::string& format, Args&&... args) {
+    if (sizeof...(args) == 0) {
+      return format;
+    }
 
-		ArgArray argArray;
-		Transfer(argArray, args...);
-		size_t start = 0;
-		size_t pos = 0;
-		std::ostringstream ss;
-		while (true) {
-			pos = format.find('{', start);
-			if (pos == std::string::npos) {
-				ss << format.substr(start);
-				break;
-			}
+    ArgArray argArray;
+    Transfer(argArray, args...);
+    size_t start = 0;
+    size_t pos = 0;
+    std::ostringstream ss;
+    while (true) {
+      pos = format.find('{', start);
+      if (pos == std::string::npos) {
+        ss << format.substr(start);
+        break;
+      }
 
-			ss << format.substr(start, pos - start);
-			if (format[pos + 1] == '{') {
-				ss << '{';
-				start = pos + 2;
-				continue;
-			}
+      ss << format.substr(start, pos - start);
+      if (format[pos + 1] == '{') {
+        ss << '{';
+        start = pos + 2;
+        continue;
+      }
 
-			start = pos + 1;
-			pos = format.find('}', start);
-			if (pos == std::string::npos) {
-				ss << format.substr(start - 1);
-				break;
-			}
+      start = pos + 1;
+      pos = format.find('}', start);
+      if (pos == std::string::npos) {
+        ss << format.substr(start - 1);
+        break;
+      }
 
-			FormatItem(ss, format.substr(start, pos - start), argArray);
-			start = pos + 1;
-		}
+      FormatItem(ss, format.substr(start, pos - start), argArray);
+      start = pos + 1;
+    }
 
-		return ss.str();
-	}
+    return ss.str();
+  }
 }
 
 namespace Toolkits {
@@ -195,11 +195,11 @@ int main() {
   //    }
   //  }
   //);
-  
+
  // char gamepath[] = R"(H:\C C++ C#\LaunchCore\LaunchCore\x64\Debug\.minecraft)";
  // char gameid[] = R"(1.7.10)";
  // 
-	//ifstream infile;
+  //ifstream infile;
  // string file = Toolkits::Format(R"({0}\versions\\{1}\{1}.json)", gamepath, gameid);
  // infile.open(file);
  // 
@@ -223,17 +223,39 @@ int main() {
  // infile.close();
  // delete(in);
 
-	OfflineAuth auth("shabi");
+  //OfflineAuth auth("shabi");
 
-	Jvm jvm(512,1024, R"(C:\Users\55343\.jdks\corretto-18.0.2\bin\java.exe)");
+  //Jvm jvm(512,1024, R"(C:\Users\55343\.jdks\corretto-18.0.2\bin\java.exe)");
 
-	GameWindow gamewindow;
+  //GameWindow gamewindow;
 
-	Server server;
+  //Server server;
 
-	Settings settings(auth,jvm,gamewindow,server);
+  //Settings settings(auth,jvm,gamewindow,server);
 
-	
+  //LaunchCore core("/" ,settings);
 
-	LaunchCore core("/" ,settings);
+  LaunchCore core(
+    ".minecraft",
+    Settings{
+      OfflineAuth{
+        "shabi"
+      },
+      Jvm{
+        512,
+        1024,
+        R"(C:\Users\55343\.jdks\corretto - 18.0.2\bin\java.exe)"
+      },
+      GameWindow{
+        800,
+        600,
+        false
+      },
+      Server{
+        
+      }
+    }
+  );
+
+  core.Launch("1.7.10");
 }

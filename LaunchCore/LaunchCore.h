@@ -8,6 +8,7 @@
 #endif
 
 #include "RandomUUID.h"
+#include "Log.h"
 
 
 using namespace std;
@@ -116,6 +117,14 @@ namespace MyLaunchCore {
       auth.UUID = _auth.UUID;
     }
 
+    Settings(OfflineAuth _auth, Jvm _jvm, GameWindow _gamewindow, Server _server) {
+      auth.Name = _auth.Name;
+      auth.UUID = _auth.UUID;
+      jvm = _jvm;
+      gamewindow = _gamewindow;
+      server = _server;
+    }
+
     Settings() {
 
     }
@@ -149,6 +158,7 @@ namespace MyLaunchCore {
     string Error;
 
   private:
+    Log launchlog;
     Settings settings;
     string gamepath;
     LaunchArgument launchargument;

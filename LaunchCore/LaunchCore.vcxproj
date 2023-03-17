@@ -156,6 +156,8 @@
     <ClInclude Include="LaunchCore.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="replace_all.h" />
+    <ClInclude Include="Log.h" />
+    <ClInclude Include="GetTime.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LaunchCore.cpp" />
