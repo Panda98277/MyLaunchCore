@@ -1,8 +1,9 @@
-ï»¿#include "pch.h"
+#include "pch.h"
 #include "LaunchCore.h"
 #include "replace_all.h"
 #include "Format.h"
 #include "Log.h"
+
 
 using namespace std;
 
@@ -10,6 +11,9 @@ namespace MyLaunchCore {
   LaunchCore::LaunchCore(string _gamepath, Settings _settings) {
     settings = _settings;
     gamepath = _gamepath;
+    if (!launchlog.ofs) {
+      this->Error = "ÎŞ·¨´ò¿ªÈÕÖ¾ Ä¿Â¼:";
+    }
   }
 
   LaunchCore::~LaunchCore() {
@@ -18,23 +22,24 @@ namespace MyLaunchCore {
 
   int LaunchCore::Launch(string gameid) {
 
-    launchlog.write("å¼€å§‹å¯åŠ¨æ¸¸æˆ");
-    launchlog.write(Toolkits::Format("æ¸¸æˆè·¯å¾„: {0}", gamepath));
+    launchlog.write("¿ªÊ¼Æô¶¯ÓÎÏ·");
+    launchlog.write("ÓÎÏ·Â·¾¶: "+ gamepath);
 
-    //å¯åŠ¨å‚æ•°
+    //Æô¶¯²ÎÊı
     string LaunchCommand;
 
-#pragma region è¯»å–ç‰ˆæœ¬Jsonæ–‡ä»¶
+#pragma region ¶ÁÈ¡°æ±¾JsonÎÄ¼ş
 
     ifstream infile;
-    string file = Toolkits::Format(R"({0}\versions\\{1}\{1}.json)", gamepath, gameid);
-    launchlog.write(Toolkits::Format("ç‰ˆæœ¬Jsonè·¯å¾„: {0}", file));
+    string file = gamepath + "\\versions\\"+gameid+ "\\"+ gameid + ".json";
+    launchlog.write("°æ±¾JsonÂ·¾¶: " + file);
     infile.open(file);
     if (!infile) {
-      launchlog.write("Error: ä¸åˆæ³•çš„æ¸¸æˆè·¯å¾„");
+      launchlog.write("Error: ²»ºÏ·¨µÄÓÎÏ·Â·¾¶");
       launchlog.write("Exit");
       return 0;
     }
+
 
     delete(&file);
 
@@ -62,35 +67,36 @@ namespace MyLaunchCore {
         }
       }
       else {
-        launchlog.write("Error: æ— æ³•è¯»å–çš„ç‰ˆæœ¬Jsonæ–‡ä»¶");
+        launchlog.write("Error: ÎŞ·¨¶ÁÈ¡µÄ°æ±¾JsonÎÄ¼ş");
         launchlog.write("Exit");
         return 0;
       }
     }
     else {
-      launchlog.write("Error: æ— æ³•è¯»å–çš„ç‰ˆæœ¬Jsonæ–‡ä»¶");
+      launchlog.write("Error: ÎŞ·¨¶ÁÈ¡µÄ°æ±¾JsonÎÄ¼ş");
       launchlog.write("Exit");
       return 0;
     }
+
     delete(in);
 #pragma endregion
 
     launchargument.Name = settings.auth.Name;
     launchargument.Name = settings.auth.UUID;
     launchargument.Gamedir = gamepath;
-    launchargument.AssetsDir = Toolkits::Format(R"({0}\assets)", gamepath).data();
+    launchargument.AssetsDir =  gamepath + "\\assets";
 
-    launchlog.write(Toolkits::Format("å¯åŠ¨å‚æ•°: {0}", launchargument));
+    /*launchlog.write("Æô¶¯²ÎÊı: " + launchargument);*/
 
     if (settings.gamewindow.IsFullscreen) LaunchCommand += "--fullscreen ";
 
-    LaunchCommand += "-Xmx ${Xmx} -Xms ${Xms} -Xmn ${Xmn} -XX:+UseG1GC -XX:-UseAdaptiveSizePolicy -XX:-OmitStackTraceInFastThrow";
+    LaunchCommand += "-Xmx ${Xmx} -Xms ${Xms} -Xmn ${Xmn} -XX:+UseG1GC -XX:-UseAdaptiveSizePolicy -XX:-OmitStackTraceInFastThrow -";
 
-    launchlog.write(Toolkits::Format("å¯åŠ¨å‘½ä»¤: {0}",LaunchCommand));
+    launchlog.write("Æô¶¯ÃüÁî: " + LaunchCommand);
 
 #pragma endregion
 
-#pragma region å¼€å§‹æ¸¸æˆ
+#pragma region ¿ªÊ¼ÓÎÏ·
     system(LaunchCommand.data());
 #pragma endregion
 

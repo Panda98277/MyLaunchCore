@@ -1,5 +1,7 @@
-﻿#pragma once
+#pragma once
 #include "pch.h"
+#include "RandomUUID.h"
+#include "Log.h"
 
 #ifdef DLLI
 #define DLLI __declspec(dllexport)
@@ -7,8 +9,6 @@
 #define DLLI __declspec(dllimport)
 #endif
 
-#include "RandomUUID.h"
-#include "Log.h"
 
 
 using namespace std;
@@ -25,7 +25,7 @@ namespace MyLaunchCore {
   //extern "C" DLLI class JVM;
   //extern "C" DLLI class Auth;
 
-#pragma region 验证
+#pragma region ��֤
 
   extern "C" DLLI class OfflineAuth {
   public:
@@ -117,6 +117,14 @@ namespace MyLaunchCore {
       auth.UUID = _auth.UUID;
     }
 
+    //Settings(OfflineAuth _auth, Jvm _jvm, GameWindow _gamewindow, Server _server) {
+    //  auth.Name = _auth.Name;
+    //  auth.UUID = _auth.UUID;
+    //  jvm = _jvm;
+    //  gamewindow = _gamewindow;
+    //  server = _server;
+    //}
+
     Settings(OfflineAuth _auth, Jvm _jvm, GameWindow _gamewindow, Server _server) {
       auth.Name = _auth.Name;
       auth.UUID = _auth.UUID;
@@ -151,9 +159,9 @@ namespace MyLaunchCore {
 
   extern "C" DLLI class LaunchCore {
   public:
-    LaunchCore(string _gamepath, Settings _settings);
-    ~LaunchCore();
-    int Launch(string gameid);
+    DLLI LaunchCore(string _gamepath, Settings _settings);
+    DLLI ~LaunchCore();
+    int DLLI Launch(string gameid);
 
     string Error;
 

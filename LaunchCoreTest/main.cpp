@@ -12,10 +12,10 @@
 #include <__msvc_chrono.hpp>
 #include <fstream>
 #include <LaunchCore.h>
-
+#include <windows.h>
+#include <Winuser.h>
 
 using namespace std;
-
 using namespace MyLaunchCore;
 
 namespace Toolkits {
@@ -222,21 +222,21 @@ int main() {
  // 
  // infile.close();
  // delete(in);
-
+  //
   //OfflineAuth auth("shabi");
-
+  //
   //Jvm jvm(512,1024, R"(C:\Users\55343\.jdks\corretto-18.0.2\bin\java.exe)");
-
+  //
   //GameWindow gamewindow;
-
+  //
   //Server server;
-
+  //
   //Settings settings(auth,jvm,gamewindow,server);
-
+  //
   //LaunchCore core("/" ,settings);
 
-  LaunchCore core(
-    ".minecraft",
+  LaunchCore core{
+    R"(.\.minecraft)",
     Settings{
       OfflineAuth{
         "shabi"
@@ -244,7 +244,7 @@ int main() {
       Jvm{
         512,
         1024,
-        R"(C:\Users\55343\.jdks\corretto - 18.0.2\bin\java.exe)"
+        R"(C:\Users\55343\.jdks\corretto-18.0.2\bin\java.exe)"
       },
       GameWindow{
         800,
@@ -252,10 +252,10 @@ int main() {
         false
       },
       Server{
-        
+
       }
     }
-  );
-
+  };
   core.Launch("1.7.10");
+
 }

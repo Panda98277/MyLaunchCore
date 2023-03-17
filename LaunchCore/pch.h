@@ -22,5 +22,8 @@
 #include <streambuf>
 #include <iomanip>
 #include <fstream>
+#include <random>
+#include <__msvc_chrono.hpp>
+#include <direct.h>
 
 #endif //PCH_H
