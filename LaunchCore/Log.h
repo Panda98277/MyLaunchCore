@@ -9,11 +9,17 @@ namespace MyLaunchCore {
   class Log {
   public:
     Log() {
-      string file = getcwd(NULL, 0); 
-      file += R"(\Log\log.txt)";
-      ofs.open(file, ios::app | ios::out);
+      char s[MAX_PATH];
+      getcwd(s, MAX_PATH); 
+      string file = s;
+      ofs.open(file + R"(\Log\log.txt)", ios::app | ios::out);
+      if (!ofs) {
+        ofs.close();
+        mkdir((file + "\\Log").data());
+        ofs.open(file + R"(\Log\log.txt)", ios::app | ios::out);
+      }
+      
     }
-
     ~Log() {
       ofs.close();
     }

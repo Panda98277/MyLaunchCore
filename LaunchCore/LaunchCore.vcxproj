@@ -157,6 +157,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="LaunchCore.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="quotation.h" />
     <ClInclude Include="replace_all.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="GetTime.h" />

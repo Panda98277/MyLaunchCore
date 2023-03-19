@@ -127,18 +127,18 @@ namespace Toolkits {
   }
 }
 
-namespace Toolkits {
-  static std::string RandomUUID() {
-    std::stringstream stream;
-    auto random_seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::mt19937 seed_engine(random_seed);
-    std::uniform_int_distribution<std::size_t> random_gen;
-    std::size_t value = random_gen(seed_engine);
-    stream << std::hex << value;
 
-    return stream.str();
-  }
+static std::string RandomUUID() {
+  std::stringstream stream;
+  auto random_seed = std::chrono::system_clock::now().time_since_epoch().count();
+  std::mt19937 seed_engine(random_seed);
+  std::uniform_int_distribution<std::size_t> random_gen;
+  std::size_t value = random_gen(seed_engine);
+  stream << std::hex << value;
+
+  return stream.str();
 }
+
 
 
 
@@ -196,7 +196,7 @@ int main() {
   //  }
   //);
 
- // char gamepath[] = R"(H:\C C++ C#\LaunchCore\LaunchCore\x64\Debug\.minecraft)";
+  // char gamepath[] = R"(H:\C C++ C#\LaunchCore\LaunchCore\x64\Debug\.minecraft)";
  // char gameid[] = R"(1.7.10)";
  // 
   //ifstream infile;
@@ -236,7 +236,7 @@ int main() {
   //LaunchCore core("/" ,settings);
 
   LaunchCore core{
-    R"(.\.minecraft)",
+    R"(\.minecraft)",
     Settings{
       OfflineAuth{
         "shabi"
@@ -258,4 +258,47 @@ int main() {
   };
   core.Launch("1.7.10");
 
+//  string json = R"(
+//{
+//  "libraries": [
+//    {
+//      "downloads": {
+//        "artifact": {
+//          "path": "com/mojang/netty/1.8.8/netty-1.8.8.jar",
+//          "sha1": "0a796914d1c8a55b4da9f4a8856dd9623375d8bb",
+//          "size": 15966,
+//          "url": "https://libraries.minecraft.net/com/mojang/netty/1.8.8/netty-1.8.8.jar"
+//        }
+//      },
+//      "name": "com.mojang:netty:1.8.8"
+//    },
+//    {
+//      "downloads": {
+//        "artifact": {
+//          "path": "com/mojang/realms/1.3.5/realms-1.3.5.jar",
+//          "sha1": "0807ae355ee63583becd7ea60e76aab1532bb42e",
+//          "size": 353818,
+//          "url": "https://libraries.minecraft.net/com/mojang/realms/1.3.5/realms-1.3.5.jar"
+//        }
+//      },
+//      "name": "com.mojang:realms:1.3.5"
+//    }
+//  ]
+//}
+//  )";
+//  Json::Reader reader;
+//  Json::Value root;
+//
+//  if (reader.parse(json, root)) {
+//
+//    int i;
+//    for (i = 0; i < root["libraries"].size(); i++) {
+//      if (root["libraries"][i]["downloads"]["artifact"]) {
+//        cout << root["libraries"][i]["downloads"]["artifact"]["path"] << endl;
+//      }
+//    }
+//  }
+//  else {
+//    cout << endl;
+//  }
 }

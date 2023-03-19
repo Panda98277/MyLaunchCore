@@ -31,8 +31,12 @@ namespace MyLaunchCore {
   public:
     OfflineAuth(string _name) {
       UUID = Toolkits::RandomUUID();
+      Token = UUID;
       Name = _name;
     }
+
+    string Token;
+    string UserType = "Legacy";
     string Name;
     string UUID;
   };
@@ -61,6 +65,8 @@ namespace MyLaunchCore {
 
     }
 
+    string Token;
+    string UserType = "Legacy";
     string Name;
     string UUID;
   };
@@ -68,11 +74,11 @@ namespace MyLaunchCore {
   extern "C" DLLI class Jvm {
   public:
     Jvm(int _xmx, int _xms, string _javapath) {
-      this->Xmx = std::to_string(_xmx);
-      this->Xms = std::to_string(_xms);
+      this->Xmx = std::to_string(_xmx) + "M";
+      this->Xms = std::to_string(_xms) + "M";
       this->JavaPath = _javapath;
       //std::to_chars(&Xmn, &Xmn + sizeof(Xmn), (_xmx.getNumericValue() * 0.375));
-      this->Xmn = to_string(_xmx * 0.375);
+      this->Xmn = to_string(int(_xmx * 0.375)) + "M";
     }
 
     Jvm() {
@@ -128,6 +134,8 @@ namespace MyLaunchCore {
     Settings(OfflineAuth _auth, Jvm _jvm, GameWindow _gamewindow, Server _server) {
       auth.Name = _auth.Name;
       auth.UUID = _auth.UUID;
+      auth.UserType = _auth.UserType;
+      auth.Token = _auth.Token;
       jvm = _jvm;
       gamewindow = _gamewindow;
       server = _server;
@@ -150,11 +158,13 @@ namespace MyLaunchCore {
 
   class LaunchArgument {
   public:
-    string Name;
-    string Version;
-    string Gamedir;
-    string AssetsDir;
     string MinecraftArguments;
+    string MainClass;
+    string LibraryPath;
+    string ClassPath;
+    string Xmx;
+    string Xmn;
+    string Xms;
   };
 
   extern "C" DLLI class LaunchCore {

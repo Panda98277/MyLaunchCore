@@ -42,6 +42,9 @@
     <ClInclude Include="GetTime.h">
       <Filter>头文件\Toolkits</Filter>
     </ClInclude>
+    <ClInclude Include="quotation.h">
+      <Filter>头文件\Toolkits</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
