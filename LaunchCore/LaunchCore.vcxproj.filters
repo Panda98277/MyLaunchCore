@@ -63,4 +63,9 @@
       <Filter>源文件</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="JavaWrapper.jar">
+      <Filter>资源文件</Filter>
+    </CopyFileToFolders>
+  </ItemGroup>
 </Project>

@@ -3,7 +3,7 @@
 
 
 
-namespace MyLaunchCore {
+namespace UnknownLaunchCore {
   namespace Toolkits {
     class
       ArgBase {

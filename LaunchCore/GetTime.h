@@ -5,7 +5,7 @@
 
 using namespace std;
 
-namespace MyLaunchCore {
+namespace UnknownLaunchCore {
   namespace Toolkits {
     //string GetTime() {
     //  return "shabi";

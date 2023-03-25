@@ -16,7 +16,7 @@
 #include <Winuser.h>
 
 using namespace std;
-using namespace MyLaunchCore;
+using namespace UnknownLaunchCore;
 
 namespace Toolkits {
   class ArgBase {
@@ -127,7 +127,6 @@ namespace Toolkits {
   }
 }
 
-
 static std::string RandomUUID() {
   std::stringstream stream;
   auto random_seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -138,9 +137,6 @@ static std::string RandomUUID() {
 
   return stream.str();
 }
-
-
-
 
 namespace Toolkits {
   string& replace_all(char* a, const string& old_value, const string& new_value);
@@ -244,7 +240,7 @@ int main() {
       Jvm{
         512,
         1024,
-        R"(C:\Users\55343\.jdks\corretto-18.0.2\bin\java.exe)"
+        R"(C:\Users\55343\.jdks\corretto-18.0.2\bin\javaw.exe)"
       },
       GameWindow{
         800,

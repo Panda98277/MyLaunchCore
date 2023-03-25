@@ -2,7 +2,7 @@
 #include "pch.h"
 
 using namespace std;
-namespace MyLaunchCore {
+namespace UnknownLaunchCore {
   namespace Toolkits {
     string& replace_all(string& src, const string& old_value, const string& new_value) {
       // 每次重新定位起始位置，防止上轮替换后的字符串形成新的old_value

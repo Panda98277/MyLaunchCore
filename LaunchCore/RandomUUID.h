@@ -6,7 +6,7 @@
 using namespace std;
 
 
-namespace MyLaunchCore {
+namespace UnknownLaunchCore {
   namespace Toolkits {
     static string RandomUUID() {
       stringstream stream;

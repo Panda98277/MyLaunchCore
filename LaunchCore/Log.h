@@ -5,7 +5,7 @@
 
 using namespace std;
 
-namespace MyLaunchCore {
+namespace UnknownLaunchCore {
   class Log {
   public:
     Log() {

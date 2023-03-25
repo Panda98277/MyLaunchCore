@@ -5,9 +5,9 @@
 using namespace std;
 
 
-namespace MyLaunchCore {
+namespace UnknownLaunchCore {
   namespace Toolkits {
-    string quotation(string _str){
+    string Quotation(string _str){
       return "\"" + _str + "\"";
     }
   }

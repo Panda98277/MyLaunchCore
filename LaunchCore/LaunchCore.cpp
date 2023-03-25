@@ -8,7 +8,7 @@
 
 using namespace std;
 
-namespace MyLaunchCore {
+namespace UnknownLaunchCore {
   LaunchCore::LaunchCore(string _gamepath, Settings _settings) {
     settings = _settings;
     gamepath = getcwd(NULL, 0) + _gamepath;
@@ -26,7 +26,7 @@ namespace MyLaunchCore {
   int LaunchCore::Launch(string gameid) {
 
     launchlog.write("开始启动游戏");
-    launchlog.write("游戏路径: " + Toolkits::quotation(gamepath));
+    launchlog.write("游戏路径: " + Toolkits::Quotation(gamepath));
 
     //启动参数
     string LaunchCommand = "${JavaPath} ";
@@ -35,7 +35,7 @@ namespace MyLaunchCore {
 
     ifstream infile;
     string file = gamepath + "/versions/" + gameid + "/" + gameid + ".json";
-    launchlog.write("版本Json路径: " + Toolkits::quotation(file));
+    launchlog.write("版本Json路径: " + Toolkits::Quotation(file));
     infile.open(file);
     if (!infile) {
       launchlog.write("Error: 不合法的游戏路径");
@@ -56,15 +56,18 @@ namespace MyLaunchCore {
     Json::Value root;
 
     if (reader.parse(in, root)) {
+      launchargument.MainClass = root["mainClass"].asString();
       if (root["minecraftArguments"]) {
         launchargument.MinecraftArguments = root["minecraftArguments"].asString();
-        launchargument.MainClass = root["mainClass"].asString();
       }
       else if (root["arguments"]["arguments"]) {
-        launchargument.MainClass = root["mainClass"].asString();
         int i;
-        for (i = 0; i < root["arguments"]["arguments"].size(); i++) {
-          launchargument.MinecraftArguments += root["arguments"]["arguments"][i].asString() + " ";
+        for (i = 0; i < root["arguments"]["game"].size(); i++) {
+          if (root["arguments"]["arguments"]["game"][i]) {
+            if (root["arguments"]["arguments"]["game"][i]["rule"]) {
+              
+            }
+          }
         }
       }
       else {
@@ -108,14 +111,14 @@ namespace MyLaunchCore {
 
 #pragma region JVM
 
-    Toolkits::replace_all(LaunchCommand, "${JavaPath}", Toolkits::quotation(settings.jvm.JavaPath));//Java
+    Toolkits::replace_all(LaunchCommand, "${JavaPath}", Toolkits::Quotation(settings.jvm.JavaPath));//Java
     Toolkits::replace_all(LaunchCommand, "${Xmx}", settings.jvm.Xmx);//Xmx
     Toolkits::replace_all(LaunchCommand, "${Xms}", settings.jvm.Xms);//Xms
     Toolkits::replace_all(LaunchCommand, "${Xmn}", settings.jvm.Xmn);//Xmn
     //Toolkits::replace_all(LaunchCommand, "${jar}", Toolkits::quotation(gamepath + "/versions/" + gameid + "/" + gameid + ".jar"));//jar
-    Toolkits::replace_all(LaunchCommand, "${jar}", R"(C:\Users\55343\AppData\Roaming\PCL\JavaWrapper.jar)");//jar
-    Toolkits::replace_all(LaunchCommand, "${natives_directory}", Toolkits::quotation(gamepath + "/versions/" + gameid + "/" + gameid + "-natives"));
-    Toolkits::replace_all(LaunchCommand, "${classpath}", Toolkits::quotation(launchargument.ClassPath));
+    Toolkits::replace_all(LaunchCommand, "${jar}", Toolkits::Quotation(R"(C:\Users\55343\AppData\Roaming\PCL\JavaWrapper.jar)"));//jar
+    Toolkits::replace_all(LaunchCommand, "${natives_directory}", Toolkits::Quotation(gamepath + "/versions/" + gameid + "/" + gameid + "-natives"));
+    Toolkits::replace_all(LaunchCommand, "${classpath}", Toolkits::Quotation(launchargument.ClassPath));
 
 #pragma endregion
 
@@ -123,9 +126,9 @@ namespace MyLaunchCore {
     Toolkits::replace_all(LaunchCommand, "${mainClass}", launchargument.MainClass);//版本名
     Toolkits::replace_all(LaunchCommand, "${version_name}", gameid);//版本名
     Toolkits::replace_all(LaunchCommand, "${auth_player_name}", settings.auth.Name);//玩家名
-    Toolkits::replace_all(LaunchCommand, "${assets_root}", Toolkits::quotation(gamepath + "/assets"));//assets路径
+    Toolkits::replace_all(LaunchCommand, "${assets_root}", Toolkits::Quotation(gamepath + "/assets"));//assets路径
     Toolkits::replace_all(LaunchCommand, "${assets_index_name}", gameid);
-    Toolkits::replace_all(LaunchCommand, "${game_directory}", Toolkits::quotation(gamepath));//游戏路径
+    Toolkits::replace_all(LaunchCommand, "${game_directory}", Toolkits::Quotation(gamepath));//游戏路径
     Toolkits::replace_all(LaunchCommand, "${user_type}", settings.auth.UserType);
     Toolkits::replace_all(LaunchCommand, "${auth_uuid}", settings.auth.UUID);
     Toolkits::replace_all(LaunchCommand, "${auth_access_token}", settings.auth.Token);
@@ -137,10 +140,12 @@ namespace MyLaunchCore {
 
     launchlog.write("启动命令: " + LaunchCommand);
 
-#pragma endregion
+    ofstream of;
+    of.open("start.bat",ios::ate);
+    of << LaunchCommand;
 
 #pragma region 开始游戏
-    system("start.dat");
+    system("start.bat");
 #pragma endregion
 
     return 0;

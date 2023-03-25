@@ -13,7 +13,7 @@
 
 using namespace std;
 
-namespace MyLaunchCore {
+namespace UnknownLaunchCore {
 
   //extern "C" DLLI class LaunchCore;
   //extern "C" DLLI class Settings;
@@ -174,6 +174,11 @@ namespace MyLaunchCore {
     int DLLI Launch(string gameid);
 
     string Error;
+    struct OS {
+      string name = "windows";
+      float version =  10.00;
+      string arch = "x64";
+    } os;
 
   private:
     Log launchlog;
