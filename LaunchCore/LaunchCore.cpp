@@ -8,7 +8,7 @@
 
 using namespace std;
 
-namespace UnknownLaunchCore {
+namespace UnknownMinecraftLaunchCore {
   LaunchCore::LaunchCore(string _gamepath, Settings _settings) {
     settings = _settings;
     gamepath = getcwd(NULL, 0) + _gamepath;

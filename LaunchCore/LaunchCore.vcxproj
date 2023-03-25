@@ -158,6 +158,7 @@
     <ClInclude Include="LaunchCore.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="quotation.h" />
+    <ClInclude Include="ReadVersionJson.h" />
     <ClInclude Include="replace_all.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="GetTime.h" />
@@ -171,6 +172,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="RandomUUID.h" />
+    <ClCompile Include="ReadVersionJson.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="JavaWrapper.jar">

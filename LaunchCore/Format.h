@@ -3,7 +3,7 @@
 
 
 
-namespace UnknownLaunchCore {
+namespace UnknownMinecraftLaunchCore {
   namespace Toolkits {
     class
       ArgBase {

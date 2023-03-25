@@ -5,7 +5,7 @@
 
 using namespace std;
 
-namespace UnknownLaunchCore {
+namespace UnknownMinecraftLaunchCore {
   class Log {
   public:
     Log() {

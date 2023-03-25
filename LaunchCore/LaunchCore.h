@@ -13,7 +13,7 @@
 
 using namespace std;
 
-namespace UnknownLaunchCore {
+namespace UnknownMinecraftLaunchCore {
 
   //extern "C" DLLI class LaunchCore;
   //extern "C" DLLI class Settings;
@@ -181,6 +181,8 @@ namespace UnknownLaunchCore {
     } os;
 
   private:
+    class ReadVersionJson;
+
     Log launchlog;
     Settings settings;
     string gamepath;
