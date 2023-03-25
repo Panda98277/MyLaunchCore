@@ -1,5 +1,6 @@
 ## LaunchCore
 
+![](https://img.shields.io/badge/license-MIT-green)
 ![](https://img.shields.io/github/repo-size/Panda98277/UnknownLaunchCore)
 ![](https://img.shields.io/github/stars/Panda98277/UnknownLaunchCore)
 ![](https://img.shields.io/github/commit-activity/y/Panda98277/UnknownLaunchCore)
