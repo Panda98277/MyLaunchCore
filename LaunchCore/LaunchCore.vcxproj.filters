@@ -59,9 +59,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Source.def">
-      <Filter>源文件</Filter>
-    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="JavaWrapper.jar">
+      <Filter>资源文件</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="JavaWrapper.jar">

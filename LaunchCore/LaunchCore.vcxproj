@@ -177,7 +177,6 @@
       <FileType>Document</FileType>
     </CopyFileToFolders>
     <None Include="packages.config" />
-    <None Include="Source.def" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
