@@ -16,7 +16,7 @@
 #include <Winuser.h>
 
 using namespace std;
-using namespace UnknownLaunchCore;
+using namespace UnknownMinecraftLaunchCore;
 
 namespace Toolkits {
   class ArgBase {
@@ -232,7 +232,7 @@ int main() {
   //LaunchCore core("/" ,settings);
 
   LaunchCore core{
-    R"(\.minecraft)",
+    R"(/LaunchCoreTest/.minecraft)",
     Settings{
       OfflineAuth{
         "shabi"
@@ -252,7 +252,7 @@ int main() {
       }
     }
   };
-  core.Launch("1.7.10");
+  core.Launch("1.19.4");
 
 //  string json = R"(
 //{

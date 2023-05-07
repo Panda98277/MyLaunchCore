@@ -57,35 +57,44 @@ namespace UnknownMinecraftLaunchCore {
 
     if (reader.parse(in, root)) {
       launchargument.MainClass = root["mainClass"].asString();
-      if (root["minecraftArguments"]) {
-        launchargument.MinecraftArguments = root["minecraftArguments"].asString();
-      }
-      else if (root["arguments"]["arguments"]) {
+      launchargument.MinecraftArguments = root["minecraftArguments"].asString();
+
+      if (root["arguments"]) {
         int i;
-        for (i = 0; i < root["arguments"]["game"].size(); i++) {
-          if (root["arguments"]["arguments"]["game"][i]) {
-            if (root["arguments"]["arguments"]["game"][i]["rule"]) {
-              
+        if (root["arguments"]) {
+          for (i = 0; i < root["arguments"]["game"].size(); i++) {
+            if (root["arguments"]["game"][i]["rules"]) {
+              bool IsApplicable;
+              auto rules = root["arguments"]["game"][i]["rules"];
+              int j;
+              if (IsApplicable and root["arguments"]["game"][i]["rules"]["action"].asString() != "allow") IsApplicable = false;
+              if (IsApplicable and root["arguments"]["game"][i]["rules"]["os"]["name"].asString() != this->os.name) IsApplicable = false;
+              if (IsApplicable and root["arguments"]["game"][i]["rules"]["os"]["version"]) {
+                regex ver_reg(root["arguments"]["game"][i]["rules"]["os"]["version"].asString());
+                smatch result;
+                if (!regex_match(this->os.version, result, ver_reg)) {
+                  IsApplicable = false;
+                }
+              }
+              if (IsApplicable and root["arguments"]["game"][i]["rules"]["os"]["arch"].asString() != this->os.arch) IsApplicable = false;
+
+              if (IsApplicable) {
+                int k;
+                for (k = 0; k < root["arguments"]["game"][i]["values"].size(); k++) {
+                  launchargument.MinecraftArguments += root["arguments"]["game"][i]["values"]["k"].asString();
+                }
+              }
+            }
+            else {
+              launchargument.MinecraftArguments += root["arguments"]["game"][i].asString();
             }
           }
+
         }
       }
-      else {
-        launchlog.write("Error: 无法读取的版本Json文件");
-        launchlog.write("Exit");
-        return 0;
-      }
+
       int i;
       for (i = 0; i < root["libraries"].size(); i++) {
-        //if (root["libraries"][i]["downloads"]["artifact"]) {
-        //  launchargument.ClassPath += gamepath + "/libraries/" + root["libraries"][i]["downloads"]["artifact"]["path"].asString() + ";";
-        //}
-        //else if (root["libraries"][i]["downloads"]["classifiers"]) {
-        //  if (root["libraries"][i]["downloads"]["classifiers"]["natives-windows-64"])
-        //    launchargument.ClassPath += gamepath + "/libraries/" + root["libraries"][i]["downloads"]["classifiers"]["natives-windows-64"]["path"].asString() + ";";
-        //  else if (root["libraries"][i]["downloads"]["classifiers"]["natives-window"])
-        //    launchargument.ClassPath += gamepath + "/libraries/" + root["libraries"][i]["downloads"]["classifiers"]["natives-windows-64"]["path"].asString() + ";";
-        //}
         if (root["libraries"][i]["downloads"]["artifact"]) {
           launchargument.ClassPath += gamepath + "/libraries/" + root["libraries"][i]["downloads"]["artifact"]["path"].asString() + ";";
         }
@@ -107,7 +116,12 @@ namespace UnknownMinecraftLaunchCore {
     delete(in);
 #pragma endregion
 
-    LaunchCommand += " -Djava.library.path=${natives_directory} -XX:+UseG1GC -XX:-UseAdaptiveSizePolicy -XX:-OmitStackTraceInFastThrow -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump -Xmx${Xmx} -Xmn${Xmn}  -cp ${classpath} --add-exports cpw.mods.bootstraplauncher/cpw.mods.bootstraplauncher=ALL-UNNAMED -jar ${jar} ${mainClass} " + launchargument.MinecraftArguments;
+    if (launchargument.Arguments.empty()) {
+      LaunchCommand += " -Djava.library.path=${natives_directory} -XX:+UseG1GC -XX:-UseAdaptiveSizePolicy -XX:-OmitStackTraceInFastThrow -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump -Xmx${Xmx} -Xmn${Xmn}  -cp ${classpath} -jar ${jar} ${mainClass} " + launchargument.MinecraftArguments;
+    }
+    else {
+      LaunchCommand += launchargument.Arguments + launchargument.MinecraftArguments;
+    }
 
 #pragma region JVM
 
@@ -141,7 +155,7 @@ namespace UnknownMinecraftLaunchCore {
     launchlog.write("启动命令: " + LaunchCommand);
 
     ofstream of;
-    of.open("start.bat",ios::ate);
+    of.open("start.bat", ios::ate);
     of << LaunchCommand;
 
 #pragma region 开始游戏

@@ -159,6 +159,7 @@ namespace UnknownMinecraftLaunchCore {
   class LaunchArgument {
   public:
     string MinecraftArguments;
+    string Arguments;
     string MainClass;
     string LibraryPath;
     string ClassPath;
@@ -176,7 +177,7 @@ namespace UnknownMinecraftLaunchCore {
     string Error;
     struct OS {
       string name = "windows";
-      float version =  10.00;
+      string version = "10.00";
       string arch = "x64";
     } os;
 

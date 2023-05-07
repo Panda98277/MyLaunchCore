@@ -25,5 +25,6 @@
 #include <random>
 #include <__msvc_chrono.hpp>
 #include <direct.h>
+#include<regex>
 
 #endif //PCH_H
