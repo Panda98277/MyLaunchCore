@@ -119,8 +119,8 @@ namespace UnknownMinecraftLaunchCore {
   extern "C" DLLI class Settings {
   public:
     Settings(Auth _auth, Jvm _jvm, GameWindow _gamewindow, Server _server) {
-      auth.Name = _auth.Name;
-      auth.UUID = _auth.UUID;
+      auth->Name = _auth.Name;
+      auth->UUID = _auth.UUID;
     }
 
     //Settings(OfflineAuth _auth, Jvm _jvm, GameWindow _gamewindow, Server _server) {
@@ -131,11 +131,12 @@ namespace UnknownMinecraftLaunchCore {
     //  server = _server;
     //}
 
-    Settings(OfflineAuth _auth, Jvm _jvm, GameWindow _gamewindow, Server _server) {
-      auth.Name = _auth.Name;
-      auth.UUID = _auth.UUID;
-      auth.UserType = _auth.UserType;
-      auth.Token = _auth.Token;
+    Settings(OfflineAuth* _auth, Jvm* _jvm, GameWindow* _gamewindow, Server* _server) {
+      cout << _auth->Name;
+      auth->Name = _auth->Name;
+      auth->UUID = _auth->UUID;
+      auth->UserType = _auth->UserType;
+      auth->Token = _auth->Token;
       jvm = _jvm;
       gamewindow = _gamewindow;
       server = _server;
@@ -149,10 +150,10 @@ namespace UnknownMinecraftLaunchCore {
 
     }
 
-    Auth auth;
-    Jvm jvm;
-    GameWindow gamewindow;
-    Server server;
+    Auth* auth;
+    Jvm* jvm;
+    GameWindow* gamewindow;
+    Server* server;
   };
 #pragma endregion
 
@@ -170,7 +171,7 @@ namespace UnknownMinecraftLaunchCore {
 
   extern "C" DLLI class LaunchCore {
   public:
-    DLLI LaunchCore(string _gamepath, Settings _settings);
+    DLLI LaunchCore(string _gamepath, Settings* _settings);
     DLLI ~LaunchCore();
     int DLLI Launch(string gameid);
 
@@ -179,14 +180,12 @@ namespace UnknownMinecraftLaunchCore {
       string name = "windows";
       string version = "10.00";
       string arch = "x64";
-    } os;
+    }* os;
 
-  private:
-    class ReadVersionJson;
-
-    Log launchlog;
-    Settings settings;
+    Log* launchlog;
+    Settings* settings;
     string gamepath;
-    LaunchArgument launchargument;
+    LaunchArgument* launchargument;
+  private:
   };
 }

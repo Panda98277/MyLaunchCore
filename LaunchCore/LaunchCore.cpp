@@ -9,12 +9,12 @@
 using namespace std;
 
 namespace UnknownMinecraftLaunchCore {
-  LaunchCore::LaunchCore(string _gamepath, Settings _settings) {
+  LaunchCore::LaunchCore(string _gamepath, Settings* _settings) {
     settings = _settings;
     gamepath = getcwd(NULL, 0) + _gamepath;
     Toolkits::replace_all(gamepath, "\\", "/");
 
-    if (!launchlog.ofs) {
+    if (!launchlog->ofs) {
       this->Error = "无法打开日志 目录:";
     }
   }
@@ -25,8 +25,8 @@ namespace UnknownMinecraftLaunchCore {
 
   int LaunchCore::Launch(string gameid) {
 
-    launchlog.write("开始启动游戏");
-    launchlog.write("游戏路径: " + Toolkits::Quotation(gamepath));
+    launchlog->write("开始启动游戏");
+    launchlog->write("游戏路径: " + Toolkits::Quotation(gamepath));
 
     //启动参数
     string LaunchCommand = "${JavaPath} ";
@@ -35,11 +35,11 @@ namespace UnknownMinecraftLaunchCore {
 
     ifstream infile;
     string file = gamepath + "/versions/" + gameid + "/" + gameid + ".json";
-    launchlog.write("版本Json路径: " + Toolkits::Quotation(file));
+    launchlog->write("版本Json路径: " + Toolkits::Quotation(file));
     infile.open(file);
     if (!infile) {
-      launchlog.write("Error: 不合法的游戏路径");
-      launchlog.write("Exit");
+      launchlog->write("Error: 不合法的游戏路径");
+      launchlog->write("Exit");
       return 0;
     }
 
@@ -56,8 +56,8 @@ namespace UnknownMinecraftLaunchCore {
     Json::Value root;
 
     if (reader.parse(in, root)) {
-      launchargument.MainClass = root["mainClass"].asString();
-      launchargument.MinecraftArguments = root["minecraftArguments"].asString();
+      launchargument->MainClass = root["mainClass"].asString();
+      launchargument->MinecraftArguments = root["minecraftArguments"].asString();
 
       if (root["arguments"]) {
         int i;
@@ -68,25 +68,25 @@ namespace UnknownMinecraftLaunchCore {
               auto rules = root["arguments"]["game"][i]["rules"];
               int j;
               if (IsApplicable and root["arguments"]["game"][i]["rules"]["action"].asString() != "allow") IsApplicable = false;
-              if (IsApplicable and root["arguments"]["game"][i]["rules"]["os"]["name"].asString() != this->os.name) IsApplicable = false;
+              if (IsApplicable and root["arguments"]["game"][i]["rules"]["os"]["name"].asString() != this->os->name) IsApplicable = false;
               if (IsApplicable and root["arguments"]["game"][i]["rules"]["os"]["version"]) {
                 regex ver_reg(root["arguments"]["game"][i]["rules"]["os"]["version"].asString());
                 smatch result;
-                if (!regex_match(this->os.version, result, ver_reg)) {
+                if (!regex_match(this->os->version, result, ver_reg)) {
                   IsApplicable = false;
                 }
               }
-              if (IsApplicable and root["arguments"]["game"][i]["rules"]["os"]["arch"].asString() != this->os.arch) IsApplicable = false;
+              if (IsApplicable and root["arguments"]["game"][i]["rules"]["os"]["arch"].asString() != this->os->arch) IsApplicable = false;
 
               if (IsApplicable) {
                 int k;
                 for (k = 0; k < root["arguments"]["game"][i]["values"].size(); k++) {
-                  launchargument.MinecraftArguments += root["arguments"]["game"][i]["values"]["k"].asString();
+                  launchargument->MinecraftArguments += root["arguments"]["game"][i]["values"]["k"].asString();
                 }
               }
             }
             else {
-              launchargument.MinecraftArguments += root["arguments"]["game"][i].asString();
+              launchargument->MinecraftArguments += root["arguments"]["game"][i].asString();
             }
           }
 
@@ -96,63 +96,59 @@ namespace UnknownMinecraftLaunchCore {
       int i;
       for (i = 0; i < root["libraries"].size(); i++) {
         if (root["libraries"][i]["downloads"]["artifact"]) {
-          launchargument.ClassPath += gamepath + "/libraries/" + root["libraries"][i]["downloads"]["artifact"]["path"].asString() + ";";
+          launchargument->ClassPath += gamepath + "/libraries/" + root["libraries"][i]["downloads"]["artifact"]["path"].asString() + ";";
         }
         else if (root["libraries"][i]["downloads"]["classifiers"]) {
           //string j = root["libraries"][i].asString();
           string natives = root["libraries"][i]["natives"]["windows"].asString();
           Toolkits::replace_all(natives, "${arch}", "64");
-          launchargument.ClassPath += gamepath + "/libraries/" + root["libraries"][i]["downloads"]["classifiers"][natives]["path"].asString() + ";";
+          launchargument->ClassPath += gamepath + "/libraries/" + root["libraries"][i]["downloads"]["classifiers"][natives]["path"].asString() + ";";
         }
       }
-      launchargument.ClassPath += gamepath + "/versions/" + gameid + "/" + gameid + ".jar";
+      launchargument->ClassPath += gamepath + "/versions/" + gameid + "/" + gameid + ".jar";
     }
     else {
-      launchlog.write("Error: 无法读取的版本Json文件");
-      launchlog.write("Exit");
+      launchlog->write("Error: 无法读取的版本Json文件");
+      launchlog->write("Exit");
       return 0;
     }
 
     delete(in);
 #pragma endregion
 
-    if (launchargument.Arguments.empty()) {
-      LaunchCommand += " -Djava.library.path=${natives_directory} -XX:+UseG1GC -XX:-UseAdaptiveSizePolicy -XX:-OmitStackTraceInFastThrow -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump -Xmx${Xmx} -Xmn${Xmn}  -cp ${classpath} -jar ${jar} ${mainClass} " + launchargument.MinecraftArguments;
+    if (launchargument->Arguments.empty()) {
+      LaunchCommand += " -Djava.library.path=${natives_directory} -XX:+UseG1GC -XX:-UseAdaptiveSizePolicy -XX:-OmitStackTraceInFastThrow -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump -Xmx${Xmx} -Xmn${Xmn}  -cp ${classpath} -jar ${jar} ${mainClass} " + launchargument->MinecraftArguments;
     }
     else {
-      LaunchCommand += launchargument.Arguments + launchargument.MinecraftArguments;
+      LaunchCommand += launchargument->Arguments + launchargument->MinecraftArguments;
     }
 
-#pragma region JVM
+    map<string, string> m;
 
-    Toolkits::replace_all(LaunchCommand, "${JavaPath}", Toolkits::Quotation(settings.jvm.JavaPath));//Java
-    Toolkits::replace_all(LaunchCommand, "${Xmx}", settings.jvm.Xmx);//Xmx
-    Toolkits::replace_all(LaunchCommand, "${Xms}", settings.jvm.Xms);//Xms
-    Toolkits::replace_all(LaunchCommand, "${Xmn}", settings.jvm.Xmn);//Xmn
-    //Toolkits::replace_all(LaunchCommand, "${jar}", Toolkits::quotation(gamepath + "/versions/" + gameid + "/" + gameid + ".jar"));//jar
-    Toolkits::replace_all(LaunchCommand, "${jar}", Toolkits::Quotation(R"(C:\Users\55343\AppData\Roaming\PCL\JavaWrapper.jar)"));//jar
-    Toolkits::replace_all(LaunchCommand, "${natives_directory}", Toolkits::Quotation(gamepath + "/versions/" + gameid + "/" + gameid + "-natives"));
-    Toolkits::replace_all(LaunchCommand, "${classpath}", Toolkits::Quotation(launchargument.ClassPath));
+    m.insert(make_pair("${JavaPath}", Toolkits::Quotation(settings->jvm->JavaPath)));//Java
+    m.insert(make_pair("${Xmx}", settings->jvm->Xmx));//Xmx
+    m.insert(make_pair("${Xms}", settings->jvm->Xms));//Xms
+    m.insert(make_pair("${Xmn}", settings->jvm->Xmn));//Xmn
+    //m.insert(make_pair( "${jar}", Toolkits::quotation(gamepath + "/versions/" + gameid + "/" + gameid + "->jar")));//jar
+    m.insert(make_pair("${jar}", Toolkits::Quotation(R"(C:\Users\55343\AppData\Roaming\PCL\JavaWrapper->jar)")));//jar
+    m.insert(make_pair("${natives_directory}", Toolkits::Quotation(gamepath + "/versions/" + gameid + "/" + gameid + "-natives")));
+    m.insert(make_pair("${classpath}", Toolkits::Quotation(launchargument->ClassPath)));
+    m.insert(make_pair("${mainClass}", launchargument->MainClass));//版本名
+    m.insert(make_pair("${version_name}", gameid));//版本名
+    m.insert(make_pair("${auth_player_name}", settings->auth->Name));//玩家名
+    m.insert(make_pair("${assets_root}", Toolkits::Quotation(gamepath + "/assets")));//assets路径
+    m.insert(make_pair("${assets_index_name}", gameid));
+    m.insert(make_pair("${game_directory}", Toolkits::Quotation(gamepath)));//游戏路径
+    m.insert(make_pair("${user_type}", settings->auth->UserType));
+    m.insert(make_pair("${auth_uuid}", settings->auth->UUID));
+    m.insert(make_pair("${auth_access_token}", settings->auth->Token));
+    m.insert(make_pair("${user_properties}", "{}"));
 
-#pragma endregion
-
-#pragma region Game Arguments
-    Toolkits::replace_all(LaunchCommand, "${mainClass}", launchargument.MainClass);//版本名
-    Toolkits::replace_all(LaunchCommand, "${version_name}", gameid);//版本名
-    Toolkits::replace_all(LaunchCommand, "${auth_player_name}", settings.auth.Name);//玩家名
-    Toolkits::replace_all(LaunchCommand, "${assets_root}", Toolkits::Quotation(gamepath + "/assets"));//assets路径
-    Toolkits::replace_all(LaunchCommand, "${assets_index_name}", gameid);
-    Toolkits::replace_all(LaunchCommand, "${game_directory}", Toolkits::Quotation(gamepath));//游戏路径
-    Toolkits::replace_all(LaunchCommand, "${user_type}", settings.auth.UserType);
-    Toolkits::replace_all(LaunchCommand, "${auth_uuid}", settings.auth.UUID);
-    Toolkits::replace_all(LaunchCommand, "${auth_access_token}", settings.auth.Token);
-    Toolkits::replace_all(LaunchCommand, "${user_properties}", "{}");
+    Toolkits::replace_all(LaunchCommand, m);
+    if (settings->gamewindow->IsFullscreen) LaunchCommand += "--fullscreen";//全屏
 
 
-    if (settings.gamewindow.IsFullscreen) LaunchCommand += "--fullscreen";//全屏
-#pragma endregion
-
-    launchlog.write("启动命令: " + LaunchCommand);
+    launchlog->write("启动命令: " + LaunchCommand);
 
     ofstream of;
     of.open("start.bat", ios::ate);

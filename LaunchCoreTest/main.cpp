@@ -171,130 +171,24 @@ namespace Toolkits {
 
 
 int main() {
-
-  //char a[] = "shabi";
-  //
-  //LaunchCore launch(
-  //  a,
-  //  Settings{
-  //    JVM{
-  //      *"2048m",
-  //      *"1024m",
-  //      *(R"(C:\Program Files\Java\jre1.8.0_291\bin\javaw.exe)")
-  //    },
-  //
-  //    GameWindow{
-  //
-  //    },
-  //    Server{
-  //
-  //    }
-  //  }
-  //);
-
-  // char gamepath[] = R"(H:\C C++ C#\LaunchCore\LaunchCore\x64\Debug\.minecraft)";
- // char gameid[] = R"(1.7.10)";
- // 
-  //ifstream infile;
- // string file = Toolkits::Format(R"({0}\versions\\{1}\{1}.json)", gamepath, gameid);
- // infile.open(file);
- // 
- // infile.seekg(0, std::ios::end);
- // int length = infile.tellg();
- // infile.seekg(0, std::ios::beg);
- // 
- // char* in = new char[length];
- // 
- // infile.read(in, length);
- // 
- // //std::cout << in << std::endl;
- // 
- // Json::Reader reader;
- // Json::Value root;
- // 
- // if (reader.parse(in, root)) {
- //   std::cout << root["mainClass"].asString();
- // }
- // 
- // infile.close();
- // delete(in);
-  //
-  //OfflineAuth auth("shabi");
-  //
-  //Jvm jvm(512,1024, R"(C:\Users\55343\.jdks\corretto-18.0.2\bin\java.exe)");
-  //
-  //GameWindow gamewindow;
-  //
-  //Server server;
-  //
-  //Settings settings(auth,jvm,gamewindow,server);
-  //
-  //LaunchCore core("/" ,settings);
-
-  LaunchCore core{
+  LaunchCore* core = new LaunchCore{
     R"(/LaunchCoreTest/.minecraft)",
-    Settings{
-      OfflineAuth{
-        "shabi"
-      },
-      Jvm{
+    new Settings{
+      new OfflineAuth("shabi"),
+      new Jvm{
         512,
         1024,
         R"(C:\Users\55343\.jdks\corretto-18.0.2\bin\javaw.exe)"
       },
-      GameWindow{
+      new GameWindow{
         800,
         600,
         false
       },
-      Server{
+      new Server{
 
       }
     }
   };
-  core.Launch("1.19.4");
-
-//  string json = R"(
-//{
-//  "libraries": [
-//    {
-//      "downloads": {
-//        "artifact": {
-//          "path": "com/mojang/netty/1.8.8/netty-1.8.8.jar",
-//          "sha1": "0a796914d1c8a55b4da9f4a8856dd9623375d8bb",
-//          "size": 15966,
-//          "url": "https://libraries.minecraft.net/com/mojang/netty/1.8.8/netty-1.8.8.jar"
-//        }
-//      },
-//      "name": "com.mojang:netty:1.8.8"
-//    },
-//    {
-//      "downloads": {
-//        "artifact": {
-//          "path": "com/mojang/realms/1.3.5/realms-1.3.5.jar",
-//          "sha1": "0807ae355ee63583becd7ea60e76aab1532bb42e",
-//          "size": 353818,
-//          "url": "https://libraries.minecraft.net/com/mojang/realms/1.3.5/realms-1.3.5.jar"
-//        }
-//      },
-//      "name": "com.mojang:realms:1.3.5"
-//    }
-//  ]
-//}
-//  )";
-//  Json::Reader reader;
-//  Json::Value root;
-//
-//  if (reader.parse(json, root)) {
-//
-//    int i;
-//    for (i = 0; i < root["libraries"].size(); i++) {
-//      if (root["libraries"][i]["downloads"]["artifact"]) {
-//        cout << root["libraries"][i]["downloads"]["artifact"]["path"] << endl;
-//      }
-//    }
-//  }
-//  else {
-//    cout << endl;
-//  }
+  core->Launch("1.7.10");
 }

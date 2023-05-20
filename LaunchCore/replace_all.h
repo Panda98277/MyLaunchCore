@@ -14,5 +14,11 @@ namespace UnknownMinecraftLaunchCore {
       }
       return src;
     }
+    string replace_all(string& str, map<string, string> m) {
+      for (auto s : m) {
+        replace_all(str, s.first, s.second);
+      }
+      return str;
+    }
   }
 }

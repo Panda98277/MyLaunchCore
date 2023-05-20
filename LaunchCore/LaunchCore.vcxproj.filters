@@ -45,9 +45,6 @@
     <ClInclude Include="quotation.h">
       <Filter>头文件\Toolkits</Filter>
     </ClInclude>
-    <ClInclude Include="ReadVersionJson.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -58,9 +55,6 @@
     </ClCompile>
     <ClCompile Include="RandomUUID.h">
       <Filter>头文件\Toolkits</Filter>
-    </ClCompile>
-    <ClCompile Include="ReadVersionJson.cpp">
-      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
