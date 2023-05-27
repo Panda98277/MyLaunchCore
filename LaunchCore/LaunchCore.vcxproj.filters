@@ -16,9 +16,6 @@
     <Filter Include="头文件\Toolkits">
       <UniqueIdentifier>{133d34b0-ac99-478a-8c5a-c0f9a3fb8584}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Helpers">
-      <UniqueIdentifier>{8af76e06-6edf-413a-9842-c035e0e16598}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -43,6 +40,9 @@
       <Filter>头文件\Toolkits</Filter>
     </ClInclude>
     <ClInclude Include="quotation.h">
+      <Filter>头文件\Toolkits</Filter>
+    </ClInclude>
+    <ClInclude Include="ExeCmd.h">
       <Filter>头文件\Toolkits</Filter>
     </ClInclude>
   </ItemGroup>

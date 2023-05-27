@@ -4,27 +4,26 @@
 // 但是，如果此处列出的文件中的任何一个在生成之间有更新，它们全部都将被重新编译。
 // 请勿在此处添加要频繁更新的文件，这将使得性能优势无效。
 
-
 #ifndef PCH_H
 #define PCH_H
 
 // 添加要在此处预编译的标头
-#include "framework.h"
-#include <stdlib.h>
-#include <iostream>
-#include <string>
-#include <vector>
-#include <sstream>
-#include <algorithm>
-#include <iomanip>
 #include <json/json.h>
-#include <strstream>
-#include <streambuf>
-#include <iomanip>
+#include <stdlib.h>
+#include <algorithm>
 #include <fstream>
+#include <iomanip>
+#include <iostream>
 #include <random>
+#include <sstream>
+#include <streambuf>
+#include <string>
+#include <strstream>
+#include <vector>
+#include "framework.h"
 #include <__msvc_chrono.hpp>
 #include <direct.h>
-#include<regex>
+#include <regex>
+#include <windows.h>
 
-#endif //PCH_H
+#endif  // PCH_H

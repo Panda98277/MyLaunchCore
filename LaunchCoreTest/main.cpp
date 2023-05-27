@@ -14,6 +14,7 @@
 #include <LaunchCore.h>
 #include <windows.h>
 #include <Winuser.h>
+#include <regex>
 
 using namespace std;
 using namespace UnknownMinecraftLaunchCore;
@@ -178,7 +179,7 @@ int main() {
       new Jvm{
         512,
         1024,
-        R"(C:\Users\55343\.jdks\corretto-18.0.2\bin\javaw.exe)"
+        "C:/Program Files/Java/jdk-17/bin/javaw.exe"
       },
       new GameWindow{
         800,
@@ -190,5 +191,10 @@ int main() {
       }
     }
   };
-  core->Launch("1.7.10");
+  core->Launch("1.19.4");
+  //regex ver_reg(R"(^10\\.)");
+  //smatch result;
+  //if (!regex_match("10.00", result, ver_reg)) {
+  //  IsApplicable = false;
+  //}
 }

@@ -153,6 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ExeCmd.h" />
     <ClInclude Include="Format.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="LaunchCore.h" />

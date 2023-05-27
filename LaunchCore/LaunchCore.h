@@ -150,7 +150,7 @@ namespace UnknownMinecraftLaunchCore {
 
     }
 
-    Auth* auth;
+    Auth* auth = new Auth;
     Jvm* jvm;
     GameWindow* gamewindow;
     Server* server;
@@ -164,6 +164,7 @@ namespace UnknownMinecraftLaunchCore {
     string MainClass;
     string LibraryPath;
     string ClassPath;
+    string AssetIndex;
     string Xmx;
     string Xmn;
     string Xms;
@@ -180,12 +181,13 @@ namespace UnknownMinecraftLaunchCore {
       string name = "windows";
       string version = "10.00";
       string arch = "x64";
-    }* os;
+    };
 
-    Log* launchlog;
+    OS* os = new OS();
+    Log* launchlog = new Log();
     Settings* settings;
     string gamepath;
-    LaunchArgument* launchargument;
+    LaunchArgument* launchargument = new LaunchArgument();
   private:
   };
 }
