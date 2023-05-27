@@ -52,7 +52,8 @@ namespace UnknownMinecraftLaunchCore {
 
     infile.read(in, length);
     infile.close();
-
+    delete(&infile);
+    
     Json::Reader reader;
     Json::Value root;
 
@@ -60,9 +61,9 @@ namespace UnknownMinecraftLaunchCore {
       launchargument->MainClass = root["mainClass"].asString();
       launchargument->AssetIndex = root["assetIndex"]["id"].asString();
       if (!root["minecraftArguments"].isNull()) launchargument->MinecraftArguments = root["minecraftArguments"].asString();
-
+      int i;
       if (root["arguments"]) {
-        int i;
+        
         if (root["arguments"]["game"]) {
           for (i = 0; i < root["arguments"]["game"].size(); i++) {
             if (root["arguments"]["game"][i].isString()) {
@@ -92,7 +93,6 @@ namespace UnknownMinecraftLaunchCore {
           }
         }
       }
-      int i;
       for (i = 0; i < root["libraries"].size(); i++) {
         if (root["libraries"][i]["downloads"]["artifact"]) {
           bool IsApplicable = true;
@@ -109,7 +109,12 @@ namespace UnknownMinecraftLaunchCore {
             }
             if (IsApplicable and !rule["os"]["arch"].isNull() and rule["os"]["arch"].asString() != this->os->arch) IsApplicable = false;
           }
-          if (IsApplicable) launchargument->ClassPath += gamepath + "/libraries/" + root["libraries"][i]["downloads"]["artifact"]["path"].asString() + ";";
+          if (IsApplicable) {
+            string path = gamepath + "/libraries/" + root["libraries"][i]["downloads"]["artifact"]["path"].asString() + ";";
+
+            launchargument->ClassPath += path;
+
+          }
         }
         else if (!root["libraries"][i]["downloads"]["classifiers"].isNull()) {
           //string j = root["libraries"][i].asString();
