@@ -170,24 +170,50 @@ namespace UnknownMinecraftLaunchCore {
     string Xms;
   };
 
+
+
   extern "C" DLLI class LaunchCore {
   public:
     DLLI LaunchCore(string _gamepath, Settings* _settings);
     DLLI ~LaunchCore();
     int DLLI Launch(string gameid);
 
-    string Error;
+
+
     struct OS {
       string name = "windows";
       string version = "10.00";
       string arch = "x64";
     };
 
+    class JsonReader {
+    public:
+      JsonReader(LaunchCore* lc);
+      ~JsonReader();
+
+      class Ruler {
+      public:
+        Ruler(LaunchCore* _lc);
+        ~Ruler();
+
+        bool Rule(Json::Value root);
+
+        LaunchCore* lc;
+      };
+
+      int Read(string gameid);
+
+      LaunchCore* lc;
+      Ruler* ruler;
+    };
+
+    string Error;
     OS* os = new OS();
     Log* launchlog = new Log();
     Settings* settings;
     string gamepath;
     LaunchArgument* launchargument = new LaunchArgument();
   private:
+
   };
 }

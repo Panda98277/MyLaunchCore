@@ -3,8 +3,8 @@
 
 namespace LaunchCoreTestCSharp {
   class Main {
-    Main() {
-      Core core = new Core();
+    Main () {
+      Core core = new Core ();
     }
   }
 }
